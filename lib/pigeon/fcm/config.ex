@@ -180,8 +180,11 @@ defimpl Pigeon.Configurable, for: Pigeon.FCM.Config do
 
   def parse_error(data) do
     case Pigeon.json_library().decode(data) do
-      {:ok, response} ->
-        response["reason"] |> Macro.underscore() |> String.to_existing_atom()
+      {:ok, %{"reason" => reason}} ->
+        reason |> Macro.underscore() |> String.to_existing_atom()
+
+      {:ok, %{"error" => "Deprecated endpoint," <> _rest}} ->
+        :deprecated_endpoint
 
       error ->
         "JSON parse failed: #{inspect(error)}, body: #{inspect(data)}"
