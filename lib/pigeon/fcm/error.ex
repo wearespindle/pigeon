@@ -22,5 +22,5 @@ defmodule Pigeon.FCM.Error do
   defp parse_response("UNAVAILABLE"), do: :unavailable
   defp parse_response("INTERNAL"), do: :internal
   defp parse_response("THIRD_PARTY_AUTH_ERROR"), do: :third_party_auth_error
-  defp parse_response(_other), do: :unknown_error
+  defp parse_response(other), do: String.to_atom(other)
 end
